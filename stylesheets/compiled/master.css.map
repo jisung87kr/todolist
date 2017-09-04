@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACI,SAAI;EACA,UAAU,EAAE,MAAM",
+"sources": ["../sass/master.scss"],
+"names": [],
+"file": "master.css"
+}
