@@ -1,5 +1,147 @@
+// @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+@mixin vendor-prefix ($name, $value) {
+    @each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+        #{$vendor}#{$name}: #{$value};
+    }
+}
+
+$border_1 :  1px solid #f1f1f1;
+
+*{
+    @include vendor-prefix('box-sizing', 'border-box');
+}
+
+
 html{
-    body{
+    max-width: 800px;
+    margin: auto;
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+ul, li{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#app{
+    h1{
         text-align: center;
     }
+
+    .input_item{
+        box-sizing: border-box;
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 50px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    .func{
+        margin: 20px;
+        input{
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        span{
+            font-size: 12px;
+            float: right;
+            font-weight: 300;
+            opacity: 0.8
+        }
+    }
+
+    ul{
+        margin-top: 40px;
+        font-weight: 300;
+    }
+
+    .completed{
+        opacity: 0.2;
+        text-decoration: line-through;
+        @include vendor-prefix("transform", "scale(0.95)");
+    }
+
+    li{
+        $height : 54px;
+        transition: 0.3s ease;
+        padding: 0 150px 0 20px;
+        border: $border_1;
+        margin: 5px 0;
+        position: relative;
+        overflow:  hidden;
+
+        .txt{
+            display: block;
+            padding: 15px 0;
+        }
+
+        .info{
+            position: absolute;
+            top: 0;
+            right: -111px;
+            font-size: 13px;
+            height: $height;
+            @include vendor-prefix("transition", "0.3s ease");
+
+            *{
+                height: 100%;
+                display: block;
+                float: left;
+                line-height: $height;
+                padding: 0 10px;
+            }
+
+            .created{
+                padding: 0;
+                padding-right: 20px;
+            }
+
+            .del{
+                display: none;
+                cursor: pointer;
+                i{
+                    font-size: 14px;
+                    padding: 0;
+                    color: #ff7878;
+                }
+            }
+            .btn{
+                color: #fff;
+                font-weight: 600;
+                padding: 0 15px;
+
+            }
+            .positive{
+                margin-left: 10px;
+                background: #4fff8e;
+            }
+            .nagative{
+                background: #ff7878;
+            }
+        }
+
+        .info.on{
+            right: 0px;
+        }
+    }
+
+    li:hover .del{
+        display: block;
+    }
+
+    .animated{
+        opacity: 0;
+    }
+    .animated.opacity{
+        opacity: 1;
+    }
+
+
+
 }

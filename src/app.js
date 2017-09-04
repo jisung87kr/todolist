@@ -1,123 +1,112 @@
 Vue.component("my-list", {
-    props : ['listData', 'idx'],
+    props : ['items', 'index'],
     template : `
-      <li @click="toggle">
-        <span>{{listData.Lv1["중요도"]}}</span>
-        <span>{{listData.Lv1["내용"]}}</span>
-        <span @click="del">삭제</span>
-        <slot name="child">
-            <div>내용이 없을경우 나타납니다.</div>
-        </slot>
+      <li :class="{completed:items.completed}">
+        <span class="txt" @click="complete">{{items.item}}</span>
+        <span class="info" :class={on:toggle}>
+            <span class="created">{{items.created}}</span>
+            <span class="del" @click="toggleBtn" v-if="!toggle"><i class="material-icons">&#xE888;</i></span>
+            <span class="btn positive" @click="del">YES</span>
+            <span class="btn nagative" @click="toggleBtn">NO</span>
+        </span>
       </li>
     `,
     data : function(){
         var data = {
-            childList : this.listData,
-            haveChild : false,
+            toggle : false,
         }
         return data;
     },
     methods : {
-        toggle : function(e){
-            console.log(this.$el);
-            if(this.$el.className == "on"){
-                this.$el.className = "";
-            } else {
-                this.$el.className = "on";
-            }
+        complete : function(e){
+            e.stopPropagation();
+            this.$emit("tg-complete", this.index);
+            this.toggle = false;
         },
         del : function(e){
-            alert("삭제되었습니다");
+            this.$emit("tg-del", this.index);
+            this.toggle = false;
         },
-        modify : function(e){
-            alert("수정되었습니다");
+        toggleBtn : function(e){
+            e.stopPropagation();
+            this.toggle == false ? this.toggle = true : this.toggle = false;
         },
     },
 });
-
-Vue.component("my-list-child", {
-    props : ['lv2Data'],
-    template : `
-        <ul :class="child" v-if="checkChild == true">
-            <li v-for="idx in lv2Data.Lv2">{{idx["내용"]}}</li>
-        </ul>
-    `,
-    data : function(){
-        var data = {
-            child : {
-                "haveChild" : null,
-            }
-        }
-        return data;
-    },
-    computed : {
-        checkChild : function(){
-            this.lv2Data["자식"] == true ? this.child.haveChild = true : this.child.haveChild = false;
-            return this.child.haveChild;
-        }
-    }
-});
-
-
 
   var app = new Vue({
     el : "#app",
     data : {
       list : [
           {
-              "Lv1" : {
-                  "내용" : "청소하기",
-                  "생성일" : "2017.08.31",
-                  "중요도" : 1,
-                  "자식" : true,
-                  "Lv2" : [
-                      {
-                          "내용" : "방청소",
-                          "생성일" : "2017.08.31",
-                          "중요도" : 1,
-                          "완료" : false,
-                      },
-                      {
-                          "내용" : "화장실",
-                          "생성일" : "2017.09.01",
-                          "중요도" : 2,
-                          "완료" : false,
-                      }
-                  ]
-              },
+              "item" : "청소하기",
+              "created" : "2017.8.31",
+              "completed" : false,
           },
           {
-              "Lv1" : {
-                  "내용" : "작업",
-                  "생성일" : "2017.09.01",
-                  "중요도" : 3,
-                  "자식" : false,
-              },
+              "item" : "빨래하기1",
+              "created" : "2017.8.31",
+              "completed" : true,
           },
       ],
-      classObject : {
-          "status" : true,
-      }
+    },
+    computed : {
+        watchAddItem : function(){
+            var a = this.list.length;
+        }
     },
     methods : {
       addList : function(e){
-        var addlist = e.target.value;
-        if(addlist == ""){
+        var val = e.target.value;
+        if(val == ""){
             alert("값을 입력하세요");
         } else {
-            this.list.push(addlist);
+            var dt = new Date();
+            var m = dt.getMonth()+1;
+            var d = dt.getDate();
+            var y = dt.getFullYear();
+            var additem = {
+                "item" : val,
+                "created" : y+"."+m+"."+d,
+                "completed" : false,
+            }
+            this.list.push(additem);
             e.target.value = "";
         }
-        for (var key in this.list) {
-            var obj = this.list;
-
-            for(var val in obj[key]){
-
-            }
-        }
       },
-      toggle : function(){
-
+      toggleComplete : function(index){
+          this.list[index].completed == true ? this.list[index].completed = false : this.list[index].completed = true;
       },
+      deleteItem : function(index){
+          this.list.splice(index, 1);
+      },
+      clearComplete : function(){
+          var selectedArry = [];
+          for(var key in this.list){
+              if(this.list[key]["completed"] == true){
+                  selectedArry.push(key);
+              }
+          }
+          selectedArry = selectedArry.sort(function(a, b){
+              return b-a;
+          })
+
+          for(var key in selectedArry){
+              console.log(this.list[selectedArry[key]]);
+              this.list.splice(selectedArry[key], 1);
+          }
+      }
     }
   });
+
+
+// animate
+$(".input_item").keyup(function(e){
+    if(e.keyCode == 13){
+        $(".item_list li:last-child").addClass("rubberBand animated opacity");
+        setTimeout(function(){
+            $(".item_list li:last-child").removeClass("rubberBand animated opacity");
+        }, 1500);
+
+    };
+})

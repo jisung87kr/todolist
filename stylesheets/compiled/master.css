@@ -1,4 +1,106 @@
-html body {
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box; }
+
+html {
+  max-width: 800px;
+  margin: auto;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: -0.5px; }
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+#app h1 {
   text-align: center; }
+#app .input_item {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 50px;
+  border: 1px solid #ccc;
+  outline: none; }
+#app .func {
+  margin: 20px; }
+  #app .func input {
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 5px; }
+  #app .func span {
+    font-size: 12px;
+    float: right;
+    font-weight: 300;
+    opacity: 0.8; }
+#app ul {
+  margin-top: 40px;
+  font-weight: 300; }
+#app .completed {
+  opacity: 0.2;
+  text-decoration: line-through;
+  -webkit-transform: scale(0.95);
+  -moz-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  -o-transform: scale(0.95);
+  transform: scale(0.95); }
+#app li {
+  transition: 0.3s ease;
+  padding: 0 150px 0 20px;
+  border: 1px solid #f1f1f1;
+  margin: 5px 0;
+  position: relative;
+  overflow: hidden; }
+  #app li .txt {
+    display: block;
+    padding: 15px 0; }
+  #app li .info {
+    position: absolute;
+    top: 0;
+    right: -111px;
+    font-size: 13px;
+    height: 54px;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    -ms-transition: 0.3s ease;
+    -o-transition: 0.3s ease;
+    transition: 0.3s ease; }
+    #app li .info * {
+      height: 100%;
+      display: block;
+      float: left;
+      line-height: 54px;
+      padding: 0 10px; }
+    #app li .info .created {
+      padding: 0;
+      padding-right: 20px; }
+    #app li .info .del {
+      display: none;
+      cursor: pointer; }
+      #app li .info .del i {
+        font-size: 14px;
+        padding: 0;
+        color: #ff7878; }
+    #app li .info .btn {
+      color: #fff;
+      font-weight: 600;
+      padding: 0 15px; }
+    #app li .info .positive {
+      margin-left: 10px;
+      background: #4fff8e; }
+    #app li .info .nagative {
+      background: #ff7878; }
+  #app li .info.on {
+    right: 0px; }
+#app li:hover .del {
+  display: block; }
+#app .animated {
+  opacity: 0; }
+#app .animated.opacity {
+  opacity: 1; }
 
 /*# sourceMappingURL=master.css.map */
