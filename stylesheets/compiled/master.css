@@ -16,32 +16,90 @@ ul, li {
   padding: 0;
   list-style: none; }
 
+input, button {
+  -webkit-appearance: none;
+  border-radius: 0; }
+
+.header {
+  text-align: right;
+  position: relative;
+  margin-top: 20px; }
+  .header .message {
+    position: absolute;
+    right: 40px;
+    font-size: 11px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    top: 0;
+    color: #666; }
+    .header .message .wrapper {
+      padding: 5px 10px;
+      height: 42px;
+      overflow: hidden; }
+    .header .message .greet {
+      margin-bottom: 14px; }
+    .header .message .txt {
+      transition: 0.5s ease; }
+    .header .message::before {
+      content: "";
+      position: absolute;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid #ccc;
+      top: 0;
+      right: -8px; }
+    .header .message::after {
+      content: "";
+      position: absolute;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid #fff;
+      top: 0px;
+      right: -7px; }
+  .header .login_icon:hover ~ .message .greet {
+    margin-top: -40px; }
+  .header .login_icon:hover ~ .message .logout {
+    margin-top: -10px; }
+  .header a {
+    color: #666; }
+
 #app h1 {
-  text-align: center; }
+  text-align: center;
+  color: #E23E57; }
 #app .input_item {
   box-sizing: border-box;
   width: 100%;
   padding: 15px 20px;
-  border-radius: 50px;
-  border: 1px solid #ccc;
+  border: none;
+  border-bottom: 1px solid #f7b3b3;
+  color: #E23E57;
   outline: none; }
+#app .input_item::placeholder {
+  color: #f7b3b3; }
 #app .func {
-  margin: 20px; }
+  margin: 20px 0; }
   #app .func input {
     border: 1px solid #ccc;
     background: #fff;
     padding: 5px 10px;
-    border-radius: 5px; }
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer; }
+    #app .func input.on {
+      border: 1px solid #555273; }
   #app .func span {
     font-size: 12px;
     float: right;
     font-weight: 300;
-    opacity: 0.8; }
+    opacity: 0.8;
+    margin-top: 5px; }
 #app ul {
   margin-top: 40px;
-  font-weight: 300; }
+  font-weight: 300;
+  color: #666;
+  font-size: 14px; }
 #app .completed {
-  opacity: 0.2;
+  opacity: 0.5;
   text-decoration: line-through;
   -webkit-transform: scale(0.95);
   -moz-transform: scale(0.95);
@@ -51,13 +109,14 @@ ul, li {
 #app li {
   transition: 0.3s ease;
   padding: 0 150px 0 20px;
-  border: 1px solid #f1f1f1;
+  border: 1px solid #ccc;
   margin: 5px 0;
   position: relative;
   overflow: hidden; }
   #app li .txt {
     display: block;
-    padding: 15px 0; }
+    padding: 15px 0;
+    word-break: break-all; }
   #app li .info {
     position: absolute;
     top: 0;
@@ -84,7 +143,7 @@ ul, li {
       #app li .info .del i {
         font-size: 14px;
         padding: 0;
-        color: #ff7878; }
+        color: #E23E57; }
     #app li .info .btn {
       color: #fff;
       font-weight: 600;
@@ -93,14 +152,98 @@ ul, li {
       margin-left: 10px;
       background: #4fff8e; }
     #app li .info .nagative {
-      background: #ff7878; }
+      background: #E23E57; }
   #app li .info.on {
     right: 0px; }
+  #app li #txt {
+    display: none; }
+#app li.edit label {
+  display: none; }
+#app li.edit #txt {
+  display: block;
+  padding: 15px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+  border-bottom: 1px solid #76f4a8;
+  color: #666; }
 #app li:hover .del {
   display: block; }
 #app .animated {
   opacity: 0; }
 #app .animated.opacity {
   opacity: 1; }
+#app ul.all li {
+  display: block; }
+#app ul.active li.completed {
+  display: none; }
+#app ul.complete li {
+  display: none; }
+#app ul.complete li.completed {
+  display: block; }
+
+.login {
+  max-width: 400px;
+  margin: auto; }
+  .login .tit1 {
+    text-align: center;
+    margin: 60px 0 20px 0; }
+  .login form {
+    border-bottom: 2px dotted #ccc;
+    margin-bottom: 10px; }
+  .login .wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%; }
+  .login input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 2px; }
+  .login .submit, .login .join {
+    font-size: 14px;
+    font-weight: normal; }
+  .login .submit {
+    background: #E23E57;
+    border: 1px solid #E23E57;
+    color: #fff;
+    cursor: pointer; }
+  .login .join {
+    display: block;
+    padding: 15px;
+    border: 1px solid #E23E57;
+    text-align: center;
+    background: none;
+    color: #E23E57;
+    text-decoration: none; }
+
+.join form {
+  border-bottom: none; }
+.join .submit {
+  background: #ccc;
+  border: 1px solid #ccc;
+  transition: 0.5s ease;
+  opacity: 0.5; }
+  .join .submit.on {
+    background: #E23E57;
+    border: 1px solid #E23E57;
+    opacity: 1; }
+.join input {
+  -webkit-transition: 0.5s ease;
+  -moz-transition: 0.5s ease;
+  -ms-transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  transition: 0.5s ease; }
+.join .nope {
+  color: #E23E57; }
+  .join .nope input {
+    border: 1px solid #E23E57; }
+.join .alert {
+  margin-bottom: 10px;
+  margin-top: -8px;
+  font-size: 13px;
+  opacity: 0.9; }
 
 /*# sourceMappingURL=master.css.map */

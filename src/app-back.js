@@ -1,18 +1,18 @@
 
 Vue.component("my-list", {
     props : ['items', 'index'],
-    template :
-      '<li :class="{completed:items.completed, edit:editItem}" @dblclick="dbClick">'
-        +'<label for="txt" class="txt" @click="complete">{{items.item}}</label>'
-        +'<input type="txt" v-model="items.item" id="txt" @keyup.esc="cancelEdit" @blur="update" @keyup.enter="update">'
-        +'<span class="info" :class={on:toggle}>'
-            +'<span class="created">{{items.created}}</span>'
-            +'<span class="del" @click="toggleBtn" v-if="!toggle"><i class="material-icons">&#xE888;</i></span>'
-            +'<span class="btn positive" @click="del">YES</span>'
-            +'<span class="btn nagative" @click="toggleBtn">NO</span>'
-        +'</span>'
-      +'</li>'
-    ,
+    template : `
+      <li :class="{completed:items.completed, edit:editItem}" @dblclick="dbClick">
+        <label for="txt" class="txt" @click="complete">{{items.item}}</label>
+        <input type="txt" v-model="items.item" id="txt" @keyup.esc="cancelEdit" @blur="update" @keyup.enter="update">
+        <span class="info" :class={on:toggle}>
+            <span class="created">{{items.created}}</span>
+            <span class="del" @click="toggleBtn" v-if="!toggle"><i class="material-icons">&#xE888;</i></span>
+            <span class="btn positive" @click="del">YES</span>
+            <span class="btn nagative" @click="toggleBtn">NO</span>
+        </span>
+      </li>
+    `,
     data : function(){
         var data = {
             toggle : false,
@@ -51,31 +51,21 @@ var app = new Vue({
     el : "#app",
     data : {
       list : [],
-    //   length : this.watchAddItem,
+      length : this.watchAddItem,
       classObj : {
           all : false,
           active : false,
-          complete : false,
-        //   rubberBand: true,
-        //   animated: true,
-        //   opacity : true,
+          complete : false
       }
     },
     computed : {
         watchAddItem : function(){
-            var _this = this;
-            setTimeout(function(){
-                // _this.classObj.rubberBand = false;
-                // _this.classObj.animated = false;
-                // _this.classObj.opacity = false;
-            }, 2000)
             return this.list.length;
         },
     },
     created : function(){
       var _this = this;
         setList(_this);
-
     },
     methods : {
         addList : function(e){
@@ -88,18 +78,12 @@ var app = new Vue({
                 var m = dt.getMonth()+1;
                 var d = dt.getDate();
                 var y = dt.getFullYear();
-                var h = dt.getHours();
-                var mi = dt.getMinutes();
-                var s = dt.getSeconds();
                 var additem = {
                     "item" : val,
-                    "created" : y+"-"+m+"-"+d+" "+h+":"+mi+":"+s,
+                    "created" : y+"."+m+"."+d,
                     "completed" : 0,
                 }
                 e.target.value = "";
-                // _this.classObj.rubberBand = true;
-                // _this.classObj.animated = true;
-                // _this.classObj.opacity = true;
                 callAjax(additem, "insert", _this);
             }
       },
@@ -151,20 +135,17 @@ var app = new Vue({
           var m = dt.getMonth()+1;
           var d = dt.getDate();
           var y = dt.getFullYear();
-          var h = dt.getHours();
-          var mi = dt.getMinutes();
-          var s = dt.getSeconds();
           var additem = {
               "idx" : this.list[index].idx,
               "item" : item,
-              "created" : y+"-"+m+"-"+d+" "+h+":"+mi+":"+s,
+              "created" : y+"."+m+"."+d,
               "completed" : this.list[index].completed,
           }
 
           callAjax(additem, "update", _this);
 
           this.list[index].item = item;
-          this.list[index].created =  y+"-"+m+"-"+d+" "+h+":"+mi+":"+s;
+          this.list[index].created = y+"."+m+"."+d;
       },
       filter : function(e){
           if(e.target.value == "all"){
@@ -199,42 +180,25 @@ function setList(_this){
 
 function setItem(data, _this, type) {
     switch (type) {
-      case "toggle": {
-          for (var val in data) {
-            data[val].completed = Number(data[val].completed);
-          }
-      }
-      break;
+      case "toggle":
       case "update":
-        for (var val in data) {
-          data[val].completed = Number(data[val].completed);
+        for (var val of data) {
+          val.completed = Number(val.completed);
         }
       break;
 
       case "insert":
-        for (var val in data) {
-            data[val].completed = Number(data[val].completed);
-            data[val].animate = true;
-            _this.list.push(data[val]);
-            setTimeout(function(){
-                for (var val in _this.list){
-                    _this.list[val].animate = false;
-                }
-            }, 1000)
+        for (var val of data) {
+          val.completed = Number(val.completed);
+          _this.list.push(val);
         }
       break;
 
       default:
-        for (var val in data) {
-          data[val].completed = Number(data[val].completed);
-          data[val].animate = true;
-          _this.list.push(data[val]);
+        for (var val of data) {
+          val.completed = Number(val.completed);
+          _this.list.push(val);
         }
-        setTimeout(function(){
-            for (var val in _this.list){
-                _this.list[val].animate = false;
-            }
-        }, 1000)
 
     }
 
@@ -259,6 +223,7 @@ function callAjaxclearCompleted(_this){
     $.ajax({
         url : "../include/process.php?mode=clearcompleted",
         method : "POST",
+        // data : item,
         success : function(data){
           console.log(data);
             if(data != ""){
@@ -269,123 +234,19 @@ function callAjaxclearCompleted(_this){
     });
 }
 
-function ani(){
-    $(".item_list li:last-child").addClass("rubberBand animated opacity");
-    setTimeout(function(){
-        $(".item_list li:last-child").removeClass("rubberBand animated opacity");
-    }, 1500);
-}
+
+// animate
+// $(".input_item").keyup(function(e){
+//     if(e.keyCode == 13){
+//         $(".item_list li:last-child").addClass("rubberBand animated opacity");
+//         setTimeout(function(){
+//             $(".item_list li:last-child").removeClass("rubberBand animated opacity");
+//         }, 1500);
+//     };
+// })
 
 
 $(".func input").click(function(){
+    // console.log($(this).attr("class"));
     $(this).not(".clear").addClass("on").siblings().removeClass("on");
 });
-
-$(".input_item").focus();
-
-// join
-var join = new Vue({
-  el : ".join",
-  data : {
-    values : {
-      id : {
-        ok : null,
-        nope : null,
-        val : null
-      },
-      nick : {
-        ok : null,
-        nope : null,
-        val : null
-      },
-      pw : {
-        val : "",
-        val2 : "",
-        ok : null,
-        nope : null,
-      },
-    },
-    submit : false,
-  },
-  computed : {
-    ckOk : function(){
-      var _this = this;
-      isOk(_this);
-    }
-  },
-  methods : {
-    ckId : function(e){
-      var _this = this;
-      var val = e.target.value;
-      validation(_this, val, "id");
-    },
-    ckNick : function(e){
-      var _this = this;
-      var val = e.target.value;
-      validation(_this, val, "nick");
-    },
-    ckPw : function(e){
-
-      if(this.values.pw.val === this.values.pw.val2){
-        this.values.pw.ok = true;
-        this.values.pw.nope = false;
-      } else {
-        if(this.values.pw.val2 == ""){
-          this.values.pw.ok = false;
-          this.values.pw.nope = true;
-          return false;
-        } else {
-          this.values.pw.ok = false;
-          this.values.pw.nope = true;
-        }
-      }
-    },
-    submitData : function(e){
-      e.stopPropagation();
-      var _this = this;
-      var result = isOk(_this);
-      if(result != true){
-        e.preventDefault();
-      }
-    },
-  }
-});
-
-function validation(_this, val, type){
-  _this.values[type].val = val;
-  if(val == ""){
-    _this.values[type].val = "";
-    _this.values[type].nope = true;
-    _this.values[type].ok = false;
-    return false;
-  }
-  $.ajax({
-    url : '../include/process.php?mode=validation',
-    type : "POST",
-    data : {
-      name : type,
-      value : val,
-    },
-    success : function(data){
-
-      if(data == "true"){
-        _this.values[type].nope = false;
-        _this.values[type].ok = true;
-      } else {
-        _this.values[type].nope = true;
-        _this.values[type].ok = false;
-      }
-    }
-  });
-}
-
-function isOk(_this){
-  for(var key in _this.values){
-    if(_this.values[key].ok == null || _this.values[key].ok == false) {
-      _this.submit = false;
-      return false;
-    }
-  }
-  _this.submit = true;
-  return true;
-}
