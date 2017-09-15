@@ -7,7 +7,7 @@
                 <input type="text" name="id" value="" placeholder="ID">
             </div>
             <div class="wrapper">
-                <input type="text" name="pw" value="" placeholder="PW">
+                <input type="password" name="pw" value="" placeholder="PW">
             </div>
             <input type="submit" name="" value="LOGIN" class="submit">
         </form>

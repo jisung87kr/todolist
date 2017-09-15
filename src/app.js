@@ -306,6 +306,7 @@ var join = new Vue({
       },
     },
     submit : false,
+    doubleSubmitFlag : false,
   },
   computed : {
     ckOk : function(){
@@ -341,15 +342,30 @@ var join = new Vue({
       }
     },
     submitData : function(e){
-      e.stopPropagation();
+  
       var _this = this;
-      var result = isOk(_this);
-      if(result != true){
+      if(doubleSubmitCheck(_this)){
         e.preventDefault();
+      } else {
+        var result = isOk(_this);
+        if(result != true){
+          _this.doubleSubmitFlag = false;
+           e.preventDefault();
+        }
       }
     },
   }
 });
+
+function doubleSubmitCheck(_this){
+  if(_this.doubleSubmitFlag){
+    return _this.doubleSubmitFlag;
+  } else {
+    _this.doubleSubmitFlag = true;
+    return false;
+  }
+}
+
 
 function validation(_this, val, type){
   _this.values[type].val = val;
